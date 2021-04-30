@@ -1,0 +1,36 @@
+@model Booking.Models.Hotel
+
+@{
+    ViewData["Title"] = "Hotel details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Hotel</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.City)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.City)
+        </dd>
+    </dl>
+    @Html.DisplayFor(model => model.Descritption)
+    <br />
+    Some pictures
+</div>
+<div>
+    <a asp-action="RoomsStatus" asp-controller="Booking" asp-route-hotelId = "@Model.Id">View rooms status</a>
+    <br>
+    <a asp-action="Reservation" asp-controller="Booking" asp-route-Id = "@Model.Id">Reserve</a>
+    <br>
+    <a asp-action="Index" asp-route-City="@Model.City" asp-controller="Booking">Back to list</a>
+</div>

@@ -1,0 +1,19 @@
+﻿@model  Booking.Models.Hotel
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 id="home" class="display-4">Booking</h1>
+    <p id="home_p">Find hotel for your soul.</p>
+
+    <h2>
+        <form  asp-controller="Booking" asp-action="Index" method="post">
+            <label asp-for="City">Hotel:</label>
+            <input type="text" name="city" asp-for="City">
+            <input type="submit" value="Search">
+        </form>
+    </h2>
+</div>
+

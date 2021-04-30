@@ -1,0 +1,27 @@
+@model  Booking.Models.Users
+
+@{
+    ViewData["Title"] = "Sign Up";
+}
+
+<h2>Enter your account info</h2>
+<h2>
+    <form  asp-controller="UsersAuth" asp-action="SignUp" method="post">
+        <div>
+            <label>Name</label>
+            <input type="text" name="name" asp-for="Name">
+        </div>
+        <div>
+            <label>Login</label>
+            <input type="text" name="login" asp-for="Login">
+        </div>
+        <div>
+            <label>Password</label>
+            <input type="text" name="password" asp-for="Password">
+        </div>
+        <div>
+        <input type="submit" value="SignUp">
+        </div>
+    </form>
+     <a asp-controller="UsersAuth" asp-action="SignInIndex">If you already signed up go here</a>
+</h2>

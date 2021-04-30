@@ -1,0 +1,41 @@
+@model  IEnumerable<Booking.Models.Hotel>
+
+@{
+    ViewData["Title"] = "Avalible now";
+}
+<h2>Avalible now</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.City)
+            </th>
+            <th>
+                Free rooms
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.City)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsFreeRooms)
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-Id="@item.Id">Перейти</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
