@@ -17,6 +17,7 @@ namespace Booking
         {
         }
 
+        public virtual DbSet<Booking> Bookings { get; set; }
         public virtual DbSet<Hotel> Hotels { get; set; }
         public virtual DbSet<Room> Rooms { get; set; }
         public virtual DbSet<User> Users { get; set; }
@@ -33,6 +34,37 @@ namespace Booking
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "Russian_Russia.1251@icu");
+
+            modelBuilder.Entity<Booking>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("booking");
+
+                entity.Property(e => e.Begindate)
+                    .HasColumnType("date")
+                    .HasColumnName("begindate");
+
+                entity.Property(e => e.Enddate)
+                    .HasColumnType("date")
+                    .HasColumnName("enddate");
+
+                entity.Property(e => e.Idofroom).HasColumnName("idofroom");
+
+                entity.Property(e => e.Userid).HasColumnName("userid");
+
+                entity.HasOne(d => d.IdofroomNavigation)
+                    .WithMany()
+                    .HasForeignKey(d => d.Idofroom)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("booking_idofroom_fkey");
+
+                entity.HasOne(d => d.User)
+                    .WithMany()
+                    .HasForeignKey(d => d.Userid)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("booking_userid_fkey");
+            });
 
             modelBuilder.Entity<Hotel>(entity =>
             {

@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Booking.Migrations
 {
-    public partial class firstMig : Migration
+    public partial class mg : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -60,6 +61,41 @@ namespace Booking.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "booking",
+                columns: table => new
+                {
+                    idofroom = table.Column<int>(type: "integer", nullable: true),
+                    begindate = table.Column<DateTime>(type: "date", nullable: false),
+                    enddate = table.Column<DateTime>(type: "date", nullable: false),
+                    userid = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.ForeignKey(
+                        name: "booking_idofroom_fkey",
+                        column: x => x.idofroom,
+                        principalTable: "room",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "booking_userid_fkey",
+                        column: x => x.userid,
+                        principalTable: "users",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_booking_idofroom",
+                table: "booking",
+                column: "idofroom");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_booking_userid",
+                table: "booking",
+                column: "userid");
+
             migrationBuilder.CreateIndex(
                 name: "IX_room_h_id",
                 table: "room",
@@ -68,6 +104,9 @@ namespace Booking.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "booking");
+
             migrationBuilder.DropTable(
                 name: "room");
 
