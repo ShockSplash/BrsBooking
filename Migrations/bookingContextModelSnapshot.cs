@@ -20,6 +20,31 @@ namespace Booking.Migrations
                 .HasAnnotation("ProductVersion", "5.0.5")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+            modelBuilder.Entity("Booking.Booking", b =>
+                {
+                    b.Property<DateTime>("Begindate")
+                        .HasColumnType("date")
+                        .HasColumnName("begindate");
+
+                    b.Property<DateTime>("Enddate")
+                        .HasColumnType("date")
+                        .HasColumnName("enddate");
+
+                    b.Property<int?>("Idofroom")
+                        .HasColumnType("integer")
+                        .HasColumnName("idofroom");
+
+                    b.Property<int?>("Userid")
+                        .HasColumnType("integer")
+                        .HasColumnName("userid");
+
+                    b.HasIndex("Idofroom");
+
+                    b.HasIndex("Userid");
+
+                    b.ToTable("booking");
+                });
+
             modelBuilder.Entity("Booking.Hotel", b =>
                 {
                     b.Property<int>("Id")
@@ -115,6 +140,25 @@ namespace Booking.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("users");
+                });
+
+            modelBuilder.Entity("Booking.Booking", b =>
+                {
+                    b.HasOne("Booking.Room", "IdofroomNavigation")
+                        .WithMany()
+                        .HasForeignKey("Idofroom")
+                        .HasConstraintName("booking_idofroom_fkey")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Booking.User", "User")
+                        .WithMany()
+                        .HasForeignKey("Userid")
+                        .HasConstraintName("booking_userid_fkey")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("IdofroomNavigation");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Booking.Room", b =>
