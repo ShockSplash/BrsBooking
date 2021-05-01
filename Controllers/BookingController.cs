@@ -1,4 +1,3 @@
-using Booking.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -11,6 +10,13 @@ namespace Booking.Controllers.Booking
 {
     public class BookingController : Controller
     {
+
+        private readonly bookingContext bookingContext;
+
+        public BookingController(bookingContext context)
+        {
+            bookingContext = context;
+        }
         // 
         // GET: /Booking/
         public IActionResult Index(string city)
@@ -19,10 +25,8 @@ namespace Booking.Controllers.Booking
             {
                 return NotFound("ERROR: Please enter hotel name in search textarea");
             }
-            using(var context = _contextFactory.CreateDbContext())
-            {
-                return View(context.Hotels.Where(h => h.City == city).ToList());
-            }
+
+                return View(bookingContext.Hotels.Where(h => h.City == city).ToList());
         }
         // 
         // GET: /Booking/Details
@@ -30,13 +34,11 @@ namespace Booking.Controllers.Booking
         {
             if(id == null)
                 return NotFound();
-            using( var context = _contextFactory.CreateDbContext())
-            {
-                var hotel = await context.Hotels.FirstOrDefaultAsync(m => m.Id == id);
+
+                var hotel = await bookingContext.Hotels.FirstOrDefaultAsync(m => m.Id == id);
                 if(hotel == null)
                     return NotFound();
                 return View(hotel);
-            }
         }
 
         public IActionResult Reservation(int? id)
@@ -48,10 +50,8 @@ namespace Booking.Controllers.Booking
 
                 Console.WriteLine(User.Identity.Name);
 
-                using( var context = _contextFactory.CreateDbContext())
-                {
-                    return View(context.Hotels.FirstOrDefault(h => h.Id == id));
-                }
+
+                    return View(bookingContext.Hotels.FirstOrDefault(h => h.Id == id));
             }
             else
             {
@@ -61,16 +61,8 @@ namespace Booking.Controllers.Booking
         }
          public IActionResult RoomsStatus(int hotelId)
         {
-            using( var context = _contextFactory.CreateDbContext())
-            {
-                return View(context.Rooms.Where(r => r.H_id == hotelId).ToList());
-            }
-        }
-        private readonly IDbContextFactory<BookingContext> _contextFactory;
 
-        public BookingController(IDbContextFactory<BookingContext> contextFactory)
-        {
-            _contextFactory = contextFactory;
+                return View(bookingContext.Rooms.Where(r => r.HId == hotelId).ToList());
         }
     }
 }

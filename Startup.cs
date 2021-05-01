@@ -12,7 +12,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Booking.Data;
 
 namespace Booking
 {
@@ -30,7 +29,7 @@ namespace Booking
         {
             services.AddControllersWithViews();
 
-            services.AddDbContextFactory<BookingContext>(options => 
+            services.AddDbContext<bookingContext>(options => 
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
             
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

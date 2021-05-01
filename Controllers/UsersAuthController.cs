@@ -1,4 +1,3 @@
-using Booking.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -19,6 +18,16 @@ namespace Booking.Controllers.UsersAuth
 {
     public class UsersAuth : Controller
     {
+
+
+        private readonly bookingContext bookingContext;
+
+        public UsersAuth(bookingContext context)
+        {
+            bookingContext = context;
+        }
+        // 
+
         public IActionResult SignUpIndex()
         {
             return View();
@@ -26,14 +35,11 @@ namespace Booking.Controllers.UsersAuth
         [HttpPost]
         public IActionResult SignUp(string name, string login, string password)
         {
-            using( var context = _contextFactory.CreateDbContext())
-            {
-                if(context.Users.Any(u => u.Login == login)) return NotFound("User already exists");
-                var id = context.Users.OrderByDescending(u => u.Id).FirstOrDefault().Id + 1;
-                var user = new Users { Id = id, Name = name, Login = login, Password = password};
-                context.Users.Add(user);
-                context.SaveChanges();
-            }
+                if(bookingContext.Users.Any(u => u.Login == login)) return NotFound("User already exists");
+                var id = bookingContext.Users.OrderByDescending(u => u.Id).FirstOrDefault().Id + 1;
+                var user = new User { Id = id, Name = name, Login = login, Password = password};
+                bookingContext.Users.Add(user);
+                bookingContext.SaveChanges();
             return View();
         }
         public IActionResult SignInIndex()
@@ -42,9 +48,7 @@ namespace Booking.Controllers.UsersAuth
         }
         public async Task<IActionResult> SignIn(string login, string password)
         {
-            using( var context = _contextFactory.CreateDbContext())
-            {
-                var user = context.Users.FirstOrDefault(u => u.Login == login);
+                var user = bookingContext.Users.FirstOrDefault(u => u.Login == login);
                 if(user != null)
                 {
                     await Authenticate(login, password);
@@ -53,7 +57,6 @@ namespace Booking.Controllers.UsersAuth
                 }
                 else
                     return NotFound("Wrong password or username");
-            }
         }
         public IActionResult Profile()
         {
@@ -61,11 +64,8 @@ namespace Booking.Controllers.UsersAuth
             Console.WriteLine(userName);
             if(userName != null)
             {
-                using(var context = _contextFactory.CreateDbContext())
-                {
-                    Console.WriteLine(context.Users.FirstOrDefault(u => u.Login == userName).Name);
-                    return View(context.Users.FirstOrDefault(u => u.Login == userName));
-                }
+                    Console.WriteLine(bookingContext.Users.FirstOrDefault(u => u.Login == userName).Name);
+                    return View(bookingContext.Users.FirstOrDefault(u => u.Login == userName));
             }
             return RedirectToRoute(new {controller = "UsersAuth", action = "SignInIndex"});
         }
@@ -87,11 +87,6 @@ namespace Booking.Controllers.UsersAuth
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToRoute(new {controller = "Home", action = "Index"});
-        }
-        private readonly IDbContextFactory<BookingContext> _contextFactory;
-        public UsersAuth(IDbContextFactory<BookingContext> contextFactory)
-        {
-            _contextFactory = contextFactory;
         }
     }
 }

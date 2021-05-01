@@ -1,4 +1,4 @@
-@model  IEnumerable<Booking.Models.Room>
+@model  IEnumerable<Booking.Room>
 
 @{
     ViewData["Title"] = "Avalible now";
@@ -15,7 +15,7 @@
                 @Html.DisplayNameFor(model => model.Price)
             </th>
             <th>
-                 @Html.DisplayNameFor(model => model.IsFree)
+                 @Html.DisplayNameFor(model => model.Isfree)
             </th>
             <th></th>
         </tr>
@@ -30,7 +30,7 @@
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IsFree)
+                @Html.DisplayFor(modelItem => item.Isfree)
             </td>
             <td>
                 <a asp-action="Details" asp-route-Id="@item.Id">Перейти</a>
