@@ -1,4 +1,4 @@
-@model Booking.Hotel
+@model Hotel
 
 @{
     ViewData["Title"] = "Hotel reserved";
@@ -26,3 +26,4 @@
     <a asp-action="Index" asp-route-City="@Model.City" asp-controller="Booking">Back to list</a>
     <br>
     <a asp-action="Details" asp-route-Id="@Model.Id" asp-controller="Booking">Back to hotel's details</a>
+</div>
