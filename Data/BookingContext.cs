@@ -17,7 +17,7 @@ namespace Booking
         {
         }
 
-        public virtual DbSet<Booking> Bookings { get; set; }
+        public virtual DbSet<booking> Bookings { get; set; }
         public virtual DbSet<Hotel> Hotels { get; set; }
         public virtual DbSet<Room> Rooms { get; set; }
         public virtual DbSet<User> Users { get; set; }
@@ -35,7 +35,7 @@ namespace Booking
         {
             modelBuilder.HasAnnotation("Relational:Collation", "Russian_Russia.1251@icu");
 
-            modelBuilder.Entity<Booking>(entity =>
+            modelBuilder.Entity<booking>(entity =>
             {
                 entity.HasNoKey();
 

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Booking
 {
-    public partial class Booking
+    public partial class booking
     {
         public int? Idofroom { get; set; }
         public DateTime Begindate { get; set; }
