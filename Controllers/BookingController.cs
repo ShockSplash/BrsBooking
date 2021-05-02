@@ -19,14 +19,24 @@ namespace Booking.Controllers.Booking
         }
         // 
         // GET: /Booking/
-        public IActionResult Index(string city)
+        public IActionResult Index(string city, DateTime beginDate, DateTime endDate, int seats)
         {
-            if(String.IsNullOrEmpty(city))
-            {
-                return NotFound("ERROR: Please enter hotel name in search textarea");
-            }
-
-                return View(bookingContext.Hotels.Where(h => h.City == city).ToList());
+            var hotels = bookingContext.Hotels.AsEnumerable().Where
+            (
+                m => m.City == city && m.Id == bookingContext.Rooms.FirstOrDefault
+                (
+                    h => h.Seats == seats &&
+                         (
+                             null == bookingContext.Bookings.AsEnumerable().Where
+                             (
+                                 r => ((r.Begindate > beginDate && r.Enddate < endDate) || (r.Enddate < endDate && r.Enddate > beginDate) || (beginDate<r.Begindate && r.Enddate>endDate)) && r.Idofroom == h.Id
+                             ).ToList()
+                         )
+                ).HId
+            ).ToList();
+            if (hotels == null)
+                return NotFound();
+            return View(hotels);
         }
         // 
         // GET: /Booking/Details
