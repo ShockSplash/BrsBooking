@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
+using Booking.Models.UserWithBookingModel;
+using Booking.Services.ProfileService;
 
 namespace Booking.Controllers.UsersAuth
 {
@@ -22,9 +24,12 @@ namespace Booking.Controllers.UsersAuth
 
         private readonly bookingContext bookingContext;
 
-        public UsersAuth(bookingContext context)
+        private readonly IProfile profile;
+
+        public UsersAuth(bookingContext context, IProfile _profile)
         {
             bookingContext = context;
+            profile = _profile;
         }
         // 
 
@@ -60,14 +65,11 @@ namespace Booking.Controllers.UsersAuth
         }
         public IActionResult Profile()
         {
-            var userName = User.Identity.Name;
-            Console.WriteLine(userName);
-            if(userName != null)
-            {
-                    Console.WriteLine(bookingContext.Users.FirstOrDefault(u => u.Login == userName).Name);
-                    return View(bookingContext.Users.FirstOrDefault(u => u.Login == userName));
-            }
-            return RedirectToRoute(new {controller = "UsersAuth", action = "SignInIndex"});
+            var us = profile.getBooking(bookingContext, User.Identity.Name);
+
+            if (us != null)
+                return View(us);
+            return View(new UserBooking(null, null, null, null));
         }
         private async Task Authenticate(string userName)
         {

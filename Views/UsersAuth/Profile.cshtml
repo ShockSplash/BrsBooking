@@ -1,4 +1,4 @@
-@model  User
+@model Booking.Models.UserWithBookingModel.UserBooking
 
 @{
     ViewData["Title"] = "Profile";
@@ -6,17 +6,28 @@
 
  <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.userBooking.Name)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
+            @Html.DisplayFor(model => model.userBooking.Name)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Login)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.userBooking.Login)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Login)
+            @Html.DisplayFor(model => model.userBooking.Login)
         </dd>
     </dl>
 
 <div>My Bookings</div>
+@{ if (Model.Bookings != null)
+        foreach (var item in Model.Bookings)
+        {
+        <ul>
+            <li>
+              From  @item.Begindate to @item.Enddate; number of room: @{Room rm = Model.rooms.FirstOrDefault(u => u.Id == item.Idofroom);}  @rm.Id . 
+                In hotel: @Model.hotels.FirstOrDefault(h => h.Id == rm.HId).Name;
+            </li>
+        </ul>
+    }
+}
