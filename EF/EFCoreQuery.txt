@@ -1,0 +1,19 @@
+var sSeats = 2;
+var sBegindate = 5;
+var sEndadate = 8;
+var sCity = "Kazan";
+
+
+var query = from h in hotels.Where(h => h.City == sCity)
+            join r in rooms.Where(r => r.Seats == sSeats) on h.Id equals r.HId
+            join b in booking.Where(b => b.Begindate <= sBegindate && b.EndDate >= sEndadate) on r.Id equals b.IdOfRoom
+            select new 
+            {
+                Id = r.Id,
+                //HId = r.HId,
+                City = h.City,
+                /*Seats = r.Seats,
+                idOfRoom = b.IdOfRoom,
+                bDate = b.Begindate,
+                eDate = b.EndDate*/
+            };
