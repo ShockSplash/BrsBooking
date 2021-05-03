@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 #nullable disable
 
@@ -10,9 +12,11 @@ namespace Booking
         public int? Idofroom { get; set; }
         public DateTime Begindate { get; set; }
         public DateTime Enddate { get; set; }
+        [Key]
         public int? Userid { get; set; }
 
         public virtual Room IdofroomNavigation { get; set; }
         public virtual User User { get; set; }
+
     }
 }
