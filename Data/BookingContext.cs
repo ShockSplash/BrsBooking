@@ -37,7 +37,7 @@ namespace Booking
 
             modelBuilder.Entity<booking>(entity =>
             {
-                entity.HasNoKey();
+               // entity.HasNoKey();
 
                 entity.ToTable("booking");
 

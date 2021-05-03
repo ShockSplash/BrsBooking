@@ -13,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Booking.Services.ProfileService;
+using Booking.Services.Reservation;
 
 namespace Booking
 {
@@ -34,6 +35,7 @@ namespace Booking
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddTransient<IProfile, AddProfile>();
+            services.AddTransient<IReserve, Reserve>();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options => //CookieAuthenticationOptions

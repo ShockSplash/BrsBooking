@@ -69,7 +69,7 @@ namespace Booking.Controllers.UsersAuth
 
             if (us != null)
                 return View(us);
-            return View(new UserBooking(null, null, null, null));
+            return RedirectToRoute(new { controller = "UsersAuth", action = "SignInIndex" });
         }
         private async Task Authenticate(string userName)
         {
