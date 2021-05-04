@@ -19,7 +19,6 @@ namespace Booking.Services.Reservation
             book.Userid = user.Id;
             book.IdofroomNavigation = room;
             book.User = user;
-
             db.Bookings.Add(book);
             db.SaveChanges();
         }

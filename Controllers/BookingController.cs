@@ -13,14 +13,15 @@ namespace Booking.Controllers.Booking
     public class BookingController : Controller
     {
 
-        private readonly bookingContext bookingContext;
+        private readonly bookingContext _bookingContext;
 
-        private readonly IReserve reserve;
+        private readonly IReserve _reserve;
 
-        public BookingController(bookingContext context, IReserve _reserve)
+        public BookingController(bookingContext context, IReserve reserve)
         {
-            bookingContext = context;
-            reserve = _reserve;
+            
+            _bookingContext = context;
+            _reserve = reserve;
         }
         // 
         // GET: /Booking/
@@ -28,7 +29,17 @@ namespace Booking.Controllers.Booking
         {
             Date.beginDate = beginDate;
             Date.endDate = endDate;
-            return View(bookingContext.Hotels.ToList());
+            
+            var query = from h in _bookingContext.Hotels.Where(h => h.City == city)
+                join r in _bookingContext.Rooms.Where(r => r.Seats == seats) on h.Id equals r.HId
+                join b in _bookingContext.Bookings.Where(b => b.Begindate <= Date.beginDate && b.Enddate >= Date.endDate) on r.Id equals b.Idofroom
+                select new 
+                {
+                    Name = h.Name,
+                    City = h.City,
+                    Description = h.Description
+                };
+            return View(query);
         }
         // 
         // GET: /Booking/Details
@@ -37,7 +48,7 @@ namespace Booking.Controllers.Booking
             if(id == null)
                 return NotFound();
 
-                var hotel = await bookingContext.Hotels.FirstOrDefaultAsync(m => m.Id == id);
+                var hotel = await _bookingContext.Hotels.FirstOrDefaultAsync(m => m.Id == id);
                 if(hotel == null)
                     return NotFound();
                 return View(hotel);
@@ -49,7 +60,7 @@ namespace Booking.Controllers.Booking
             if (id == null)
                 return NotFound();
 
-            var room = await bookingContext.Rooms.FirstOrDefaultAsync(m => m.Id == id);
+            var room = await _bookingContext.Rooms.FirstOrDefaultAsync(m => m.Id == id);
             if (room == null)
                 return NotFound();
             return View(room);
@@ -65,7 +76,7 @@ namespace Booking.Controllers.Booking
                 Console.WriteLine(User.Identity.Name);
 
 
-                    return View(bookingContext.Hotels.FirstOrDefault(h => h.Id == id));
+                    return View(_bookingContext.Hotels.FirstOrDefault(h => h.Id == id));
             }
             else
             {
@@ -79,7 +90,7 @@ namespace Booking.Controllers.Booking
         {
             if (User.Identity.Name != null)
             {
-                reserve.Reserve(id, bookingContext, User.Identity.Name);
+                _reserve.Reserve(id, _bookingContext, User.Identity.Name);
                 return RedirectToAction("Index"); //TODO: Подумать куда рекдиректить пользователя
             }
             else
@@ -92,7 +103,7 @@ namespace Booking.Controllers.Booking
         public IActionResult RoomsStatus(int hotelId)
         {
 
-                return View(bookingContext.Rooms.Where(r => r.HId == hotelId).ToList());
+                return View(_bookingContext.Rooms.Where(r => r.HId == hotelId).ToList());
         }
     }
 }
