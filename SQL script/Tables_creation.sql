@@ -1,11 +1,11 @@
-    create table Hotel(
+    create table hotel(
   id serial primary key,
   name varchar(40) not null,
   city varchar(40) not null,
   description varchar(200) not null,
   isFreeRooms bool not null);
 
-create table Room(
+create table room(
   id serial primary key,
   h_id integer references hotel(id) on delete cascade,
   seats integer not null,

@@ -39,7 +39,8 @@ namespace Booking.Controllers.Booking
                     City = h.City,
                     Description = h.Description
                 };
-            return View(query);
+            Console.WriteLine(query.GetType());
+            return View(query.ToList());
         }
         // 
         // GET: /Booking/Details
@@ -91,7 +92,7 @@ namespace Booking.Controllers.Booking
             if (User.Identity.Name != null)
             {
                 _reserve.Reserve(id, _bookingContext, User.Identity.Name);
-                return RedirectToAction("Index"); //TODO: Подумать куда рекдиректить пользователя
+                return RedirectToAction("Index"); //TODO: пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             }
             else
             {
