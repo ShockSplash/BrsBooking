@@ -33,14 +33,15 @@ namespace Booking.Controllers.Booking
             var query = from h in _bookingContext.Hotels.Where(h => h.City == city)
                 join r in _bookingContext.Rooms.Where(r => r.Seats == seats) on h.Id equals r.HId
                 join b in _bookingContext.Bookings.Where(b => b.Begindate <= Date.beginDate && b.Enddate >= Date.endDate) on r.Id equals b.Idofroom
-                select new 
-                {
-                    Name = h.Name,
-                    City = h.City,
-                    Description = h.Description
-                };
-            Console.WriteLine(query.GetType());
-            return View(query.ToList());
+                select new JoinResult
+                (
+                    h.Id,
+                    h.Name,
+                    h.City,
+                    h.Description
+                );
+            //Console.WriteLine(query.GetType());
+            return View(query.AsEnumerable());
         }
         // 
         // GET: /Booking/Details

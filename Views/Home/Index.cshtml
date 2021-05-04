@@ -9,10 +9,10 @@
     <p id="home_p">Find hotel for your soul.</p>
         <form asp-controller="Booking" asp-action="Index" method="post">
             <label>Hotel:</label>
-            <input type="text" name="city" asp-route="city">
+            <input type="text" name="city" asp-route="city" placeholder="city">
             <input type="date" name="beginDate" asp-route="beginDate">
             <input type="date" name="endDate" asp-route="endDate">
-            <input type="number" name="seats" asp-route="seats">
+            <input type="number" name="seats" asp-route="seats" placeholder="seats">
             <input type="submit" value="Search">
         </form>
 </div>

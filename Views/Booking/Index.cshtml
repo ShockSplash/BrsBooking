@@ -1,5 +1,5 @@
 
-@model IEnumerable<Hotel>
+@model IEnumerable<JoinResult>
 
 @{
     ViewData["Title"] = "Avalible now";
@@ -16,7 +16,7 @@
                 @Html.DisplayNameFor(model => model.City)
             </th>
             <th>
-                Description
+                @Html.DisplayNameFor(model => model.Description)
             </th>
             <th></th>
         </tr>
