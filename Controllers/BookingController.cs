@@ -26,13 +26,16 @@ namespace Booking.Controllers.Booking
         // GET: /Booking/
         public IActionResult Index(string city, DateTime beginDate, DateTime endDate, int seats)
         {   
-            Date.beginDate = beginDate;
-            Date.endDate = endDate;
-            if(Date.beginDate > Date.endDate)
+
+            if(beginDate > endDate)
                 return NotFound("Please enter the right order of dates");
-            if(Date.beginDate < DateTime.Now.Date)
+            if(beginDate < DateTime.Now.Date)
                 return NotFound("Please enter the newest date");
             
+            MyBooking.Begindate = beginDate;
+            MyBooking.Enddate = endDate;
+            MyBooking.IsFree = true;
+
             var query = from h in _bookingContext.Hotels
                         .Where(h => h.City == city )
                 join r in _bookingContext.Rooms
@@ -47,60 +50,26 @@ namespace Booking.Controllers.Booking
                     h.City,
                     h.Description,
                     b.Begindate,
-                    b.Enddate,
-                    true
+                    b.Enddate
                 );
 
-            var result = query.AsEnumerable().Where(q => q.Id == 0).ToList();
+            var result = query.AsEnumerable().Where(q => q.Id > 0).ToList();
 
-            var x = 0;
-            foreach(var item in query)
+            foreach(var item in result)
             {
-                if( item.Begindate <= endDate && item.Enddate >= beginDate )
-                    x++;
-                if(x == 0)
-                    result.Add(item);
+                if( item.Begindate <= MyBooking.Enddate && item.Enddate >= MyBooking.Begindate )
+                    MyBooking.IsFree = false;
             }
-           
-
-            for(int i = 0; i < result.Count; i++)
-            {
-                if(result[i].Begindate < DateTime.Now.Date)
-                    result[i].isFree = false;
-            }
-
-            /*foreach(var item in result)
-            {
-                Console.WriteLine("{0} {1} {2} {3}", item.Id, item.isFree, item.Begindate, item.Enddate);
-            }*/
             
-            result.RemoveAll(r => r.isFree == false);
-            for(int i = 0; i < result.Count; i++)
-            {
-                if(result[i].isFree == true)
-                {
-                    result[i].Begindate = beginDate;
-                    result[i].Enddate = endDate;
-                }
-            }
 
-            /*foreach(var item in result)
-            {
-                Console.WriteLine("{0} {1} {2} {3}", item.Id, item.isFree, item.Begindate, item.Enddate);
-            }*/
-            Console.WriteLine(result.Count);
-            for(int i= 0; i < result.Count; i++)
-            {
-                Console.WriteLine("{0} {1} {2}", result[i].Id, result[i].Begindate, result[i].isFree);
-            }
-
-            if(result.Count == 0)
-            {
-                Console.WriteLine("OOps");
+            if(MyBooking.IsFree == false)
                 return NotFound("No hotel on that time");
+            else
+            {
+                //Нужно создать список отелей с указанной датой но голова отказывает после дня кодинга
+                return NotFound("We have hotel for you");
             }
-
-            return View(result);
+            return View();
         }
         // 
         // GET: /Booking/Details

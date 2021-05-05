@@ -14,8 +14,8 @@ namespace Booking.Services.Reservation
             Room room = db.Rooms.FirstOrDefault(r => r.Id == id);
             booking book = new booking();
             book.Idofroom = id;
-            book.Begindate = Date.beginDate;
-            book.Enddate = Date.endDate;
+            book.Begindate = MyBooking.Begindate;
+            book.Enddate = MyBooking.Enddate;
             book.Userid = user.Id;
             book.IdofroomNavigation = room;
             book.User = user;
