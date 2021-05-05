@@ -22,13 +22,13 @@ namespace Booking.Controllers.UsersAuth
     {
 
 
-        private readonly bookingContext bookingContext;
+        private readonly bookingContext _bookingContext;
 
         private readonly IProfile profile;
 
         public UsersAuth(bookingContext context, IProfile _profile)
         {
-            bookingContext = context;
+            _bookingContext = context;
             profile = _profile;
         }
         // 
@@ -40,11 +40,11 @@ namespace Booking.Controllers.UsersAuth
         [HttpPost]
         public IActionResult SignUp(string name, string login, string password)
         {
-                if(bookingContext.Users.Any(u => u.Login == login)) return NotFound("User already exists");
-                var id = bookingContext.Users.OrderByDescending(u => u.Id).FirstOrDefault().Id + 1;
+                if(_bookingContext.Users.Any(u => u.Login == login)) return NotFound("User already exists");
+                var id = _bookingContext.Users.OrderByDescending(u => u.Id).FirstOrDefault().Id + 1;
                 var user = new User { Id = id, Name = name, Login = login, Password = password};
-                bookingContext.Users.Add(user);
-                bookingContext.SaveChanges();
+                _bookingContext.Users.Add(user);
+                _bookingContext.SaveChanges();
             return View();
         }
         public IActionResult SignInIndex()
@@ -53,7 +53,7 @@ namespace Booking.Controllers.UsersAuth
         }
         public async Task<IActionResult> SignIn(string login, string password)
         {
-                var user = bookingContext.Users.FirstOrDefault(u => u.Login == login && u.Password == password);
+                var user = _bookingContext.Users.FirstOrDefault(u => u.Login == login && u.Password == password);
                 if(user != null)
                 {
                     await Authenticate(login);
@@ -65,7 +65,7 @@ namespace Booking.Controllers.UsersAuth
         }
         public IActionResult Profile()
         {
-            var us = profile.getBooking(bookingContext, User.Identity.Name);
+            var us = profile.getBooking(_bookingContext, User.Identity.Name);
 
             if (us != null)
                 return View(us);

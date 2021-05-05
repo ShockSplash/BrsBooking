@@ -14,7 +14,6 @@ namespace Booking
         public int? Idofhotel { get; set; }
         public DateTime Begindate { get; set; }
         public DateTime Enddate { get; set; }
-        [Key]
         public int? Userid { get; set; }
 
         public virtual Room IdofroomNavigation { get; set; }
