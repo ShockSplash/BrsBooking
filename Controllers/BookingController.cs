@@ -30,40 +30,76 @@ namespace Booking.Controllers.Booking
             Date.endDate = endDate;
             if(Date.beginDate > Date.endDate)
                 return NotFound("Please enter the right order of dates");
-            //if(Date.beginDate < DateTime.Now.Date)
-                //return NotFound("Please enter the newest date");
+            if(Date.beginDate < DateTime.Now.Date)
+                return NotFound("Please enter the newest date");
             
             var query = from h in _bookingContext.Hotels
-                    .Where(h => h.City == city )
+                        .Where(h => h.City == city )
                 join r in _bookingContext.Rooms
-                    .Where(r => r.Seats == seats) on h.Id equals r.HId
+                        .Where(r => r.Seats == seats) 
+                    on h.Id equals r.HId
                 join b in _bookingContext.Bookings
-                    .Where(b =>
-                    (  
-                        ( beginDate >= b.Begindate && beginDate <= b.Enddate ) ||
-                        ( beginDate <= b.Begindate && endDate >= b.Begindate)
-                    )            
-                        ) on r.Id equals b.Idofroom
+                    on r.Id equals b.Idofroom
                 select new JoinResult
                 (
                     h.Id,
                     h.Name,
                     h.City,
-                    h.Description
+                    h.Description,
+                    b.Begindate,
+                    b.Enddate,
+                    true
                 );
-            var result = query.AsEnumerable().GroupBy(q => q.Id).Select(group => group.FirstOrDefault()); 
 
-            /*var hotel = _bookingContext.Hotels
-                .Where(
-                    h => h.City == city && h.Id == _bookingContext.Rooms
-                    .Where(
-                        r => r.Seats == seats && r.Id == _bookingContext.Bookings
-                        .Where(
-                            b => b.Enddate <= beginDate || b.Begindate >= endDate
-                        )
-                    )
-                )
-            );*/
+            var result = query.AsEnumerable().Where(q => q.Id == 0).ToList();
+
+            var x = 0;
+            foreach(var item in query)
+            {
+                if( item.Begindate <= endDate && item.Enddate >= beginDate )
+                    x++;
+                if(x == 0)
+                    result.Add(item);
+            }
+           
+
+            for(int i = 0; i < result.Count; i++)
+            {
+                if(result[i].Begindate < DateTime.Now.Date)
+                    result[i].isFree = false;
+            }
+
+            /*foreach(var item in result)
+            {
+                Console.WriteLine("{0} {1} {2} {3}", item.Id, item.isFree, item.Begindate, item.Enddate);
+            }*/
+            
+            result.RemoveAll(r => r.isFree == false);
+            for(int i = 0; i < result.Count; i++)
+            {
+                if(result[i].isFree == true)
+                {
+                    result[i].Begindate = beginDate;
+                    result[i].Enddate = endDate;
+                }
+            }
+
+            /*foreach(var item in result)
+            {
+                Console.WriteLine("{0} {1} {2} {3}", item.Id, item.isFree, item.Begindate, item.Enddate);
+            }*/
+            Console.WriteLine(result.Count);
+            for(int i= 0; i < result.Count; i++)
+            {
+                Console.WriteLine("{0} {1} {2}", result[i].Id, result[i].Begindate, result[i].isFree);
+            }
+
+            if(result.Count == 0)
+            {
+                Console.WriteLine("OOps");
+                return NotFound("No hotel on that time");
+            }
+
             return View(result);
         }
         // 

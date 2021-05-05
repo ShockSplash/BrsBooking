@@ -11,6 +11,7 @@ namespace Booking
     {
         public int Id { get; set; }
         public int? Idofroom { get; set; }
+        public int? Idofhotel { get; set; }
         public DateTime Begindate { get; set; }
         public DateTime Enddate { get; set; }
         [Key]

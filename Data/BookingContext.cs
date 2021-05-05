@@ -53,6 +53,7 @@ namespace Booking
                     .HasColumnName("enddate");
 
                 entity.Property(e => e.Idofroom).HasColumnName("idofroom");
+                entity.Property(e => e.Idofhotel).HasColumnName("h_id");
 
                 entity.Property(e => e.Userid).HasColumnName("userid");
 
