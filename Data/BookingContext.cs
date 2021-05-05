@@ -101,8 +101,6 @@ namespace Booking
 
                 entity.Property(e => e.HId).HasColumnName("h_id");
 
-                entity.Property(e => e.Isfree).HasColumnName("isfree");
-
                 entity.Property(e => e.Price).HasColumnName("price");
 
                 entity.Property(e => e.Seats).HasColumnName("seats");

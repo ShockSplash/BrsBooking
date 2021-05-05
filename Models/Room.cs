@@ -11,7 +11,6 @@ namespace Booking
         public int? HId { get; set; }
         public int Seats { get; set; }
         public double Price { get; set; }
-        public bool Isfree { get; set; }
 
         public virtual Hotel HIdNavigation { get; set; }
     }
