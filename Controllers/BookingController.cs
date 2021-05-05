@@ -30,30 +30,40 @@ namespace Booking.Controllers.Booking
             Date.endDate = endDate;
             if(Date.beginDate > Date.endDate)
                 return NotFound("Please enter the right order of dates");
-            if(Date.beginDate < DateTime.Now.Date)
-                return NotFound("Please enter the newest date");
+            //if(Date.beginDate < DateTime.Now.Date)
+                //return NotFound("Please enter the newest date");
             
             var query = from h in _bookingContext.Hotels
                     .Where(h => h.City == city )
                 join r in _bookingContext.Rooms
                     .Where(r => r.Seats == seats) on h.Id equals r.HId
                 join b in _bookingContext.Bookings
-                    .Where(b => (b.Enddate <= Date.endDate    ||
-                                b.Begindate > Date.beginDate) &&
-                            b.Enddate >= DateTime.Now.Date
+                    .Where(b =>
+                    (  
+                        ( beginDate >= b.Begindate && beginDate <= b.Enddate ) ||
+                        ( beginDate <= b.Begindate && endDate >= b.Begindate)
+                    )            
                         ) on r.Id equals b.Idofroom
                 select new JoinResult
                 (
                     h.Id,
                     h.Name,
                     h.City,
-                    h.Description,
-                    b.Begindate,
-                    b.Enddate
+                    h.Description
                 );
             var result = query.AsEnumerable().GroupBy(q => q.Id).Select(group => group.FirstOrDefault()); 
-            foreach(var item in result)
-                Console.WriteLine( item.Id + " : " + item.BegDate + " : " + item.EndDate);
+
+            /*var hotel = _bookingContext.Hotels
+                .Where(
+                    h => h.City == city && h.Id == _bookingContext.Rooms
+                    .Where(
+                        r => r.Seats == seats && r.Id == _bookingContext.Bookings
+                        .Where(
+                            b => b.Enddate <= beginDate || b.Begindate >= endDate
+                        )
+                    )
+                )
+            );*/
             return View(result);
         }
         // 

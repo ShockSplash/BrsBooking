@@ -7,14 +7,12 @@ namespace Booking
 {
     public partial class JoinResult
     {
-        public JoinResult(int id, string name, string city, string desc, DateTime b, DateTime e)
+        public JoinResult(int id, string name, string city, string desc)
         {
             Id = id; 
             Name = name; 
             City = city;
             Description = desc;
-            BegDate = b;
-            EndDate = e;
         }
 
         public int Id { get; set; }
