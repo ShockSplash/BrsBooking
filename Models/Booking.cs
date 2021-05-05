@@ -9,6 +9,7 @@ namespace Booking
 {
     public partial class booking
     {
+        public int Id { get; set; }
         public int? Idofroom { get; set; }
         public DateTime Begindate { get; set; }
         public DateTime Enddate { get; set; }

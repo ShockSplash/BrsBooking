@@ -41,6 +41,9 @@ namespace Booking
 
                 entity.ToTable("booking");
 
+                entity.Property(e => e.Id)
+                    .HasColumnName("id");
+
                 entity.Property(e => e.Begindate)
                     .HasColumnType("date")
                     .HasColumnName("begindate");

@@ -18,6 +18,7 @@ create table users(
   password varchar(60) not null);
   
   create table booking(
+  id serial primary key,
   idOfRoom integer references room(id) on delete cascade,
   beginDate date not null,
   endDate date not null,

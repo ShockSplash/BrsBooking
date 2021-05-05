@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Booking.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Booking.Controllers.Home
 {
@@ -13,9 +14,12 @@ namespace Booking.Controllers.Home
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private readonly bookingContext _bookingContext;
+
+        public HomeController(ILogger<HomeController> logger, bookingContext context)
         {
             _logger = logger;
+            _bookingContext = context;
         }
 
         public IActionResult Index()
