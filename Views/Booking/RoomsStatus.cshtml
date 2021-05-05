@@ -24,10 +24,10 @@
                 @Html.DisplayFor(modelItem => item.Seats)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Price)
+                @Html.DisplayFor(modelItem => item.Price) ₽
             </td>
             <td>
-                <a asp-action="DetailsOfRoom" asp-route-Id="@item.Id">Перейти</a>
+                <a asp-action="DetailsOfRoom" asp-route-Id="@item.Id"><button type="button" class="btn btn-success">Перейти</button></a>
             </td>
         </tr>
 }
