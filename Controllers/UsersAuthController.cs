@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using Booking.Models.UserWithBookingModel;
 using Booking.Services.ProfileService;
+using Booking.Services.SignUp;
 
 namespace Booking.Controllers.UsersAuth
 {
@@ -26,10 +27,13 @@ namespace Booking.Controllers.UsersAuth
 
         private readonly IProfile profile;
 
-        public UsersAuth(bookingContext context, IProfile _profile)
+        private readonly ISign _sign;
+
+        public UsersAuth(bookingContext context, IProfile _profile, ISign sign)
         {
             _bookingContext = context;
             profile = _profile;
+            _sign = sign;
         }
         // 
 
@@ -40,11 +44,10 @@ namespace Booking.Controllers.UsersAuth
         [HttpPost]
         public IActionResult SignUp(string name, string login, string password)
         {
-                if(_bookingContext.Users.Any(u => u.Login == login)) return NotFound("User already exists");
-                var id = _bookingContext.Users.OrderByDescending(u => u.Id).FirstOrDefault().Id + 1;
-                var user = new User { Id = id, Name = name, Login = login, Password = password};
-                _bookingContext.Users.Add(user);
-                _bookingContext.SaveChanges();
+            if(_bookingContext.Users.Any(u => u.Login == login))
+                    return NotFound("User already exists");
+
+            _sign.SignU(name, login, password, _bookingContext);
             return View();
         }
         public IActionResult SignInIndex()

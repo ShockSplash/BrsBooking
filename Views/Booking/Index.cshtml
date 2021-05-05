@@ -1,11 +1,12 @@
-@model IEnumerable<JoinResult>
+﻿@model IEnumerable<Booking.Hotel>
 
 @{
-    ViewData["Title"] = "Avalible now";
+    ViewData["Title"] = "Index";
 }
-<h2>Avalible now</h2>
 
-<!table class="table">
+<h1>Index</h1>
+
+<table class="table">
     <thead>
         <tr>
             <th>
@@ -17,26 +18,31 @@
             <th>
                 @Html.DisplayNameFor(model => model.Description)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Isfreerooms)
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.City)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    <a asp-action="Details" asp-route-Id="@item.Id">Перейти</a>
-                </td>
-            </tr>
-        }
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.City)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Isfreerooms)
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.Id"><button type="button" class="btn btn-success">Detalis</button></a>
+            </td>
+        </tr>
+}
     </tbody>
-    </table>
+</table>

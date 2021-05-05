@@ -67,7 +67,7 @@ namespace Booking.Controllers.Booking
             else
             {
                 //Нужно создать список отелей с указанной датой но голова отказывает после дня кодинга
-                return NotFound("We have hotel for you");
+                return View(_bookingContext.Hotels.ToList()); // пока поставил заглушку
             }
             return View();
         }

@@ -4,20 +4,19 @@
     ViewData["Title"] = "Sign In";
 }
 
-<h2>Enter your account info</h2>
-<h2>
-    <form  asp-controller="UsersAuth" asp-action="SignIn" method="post">
-        <div>
-            <label>Login</label>
-            <input type="text" name="login" asp-for="Login">
-        </div>
-        <div>
-            <label>Password</label>
-            <input type="password" name="password" asp-for="Password">
-        </div>
-        <div>
-        <input type="submit" value="SignIn">
-        </div>
-    </form>
-    <a asp-controller="UsersAuth" asp-action="SignUpIndex">If you didn't sign up already go here</a>
-</h2>
+
+
+    <div class="text-center">
+        <form class="form-signin" asp-controller="UsersAuth" asp-action="SignIn" method="post">
+            <label for="inputEmail" class="sr-only">Login</label>
+            <input required type="text" name="login" asp-for="Login" id="inputEmail" class="form-control" placeholder="Login" required="" autofocus="">
+            <p></p>
+            <label for="inputPassword" class="sr-only">Password</label>
+            <input required type="password" name="password" asp-for="Password" id="inputPassword" class="form-control" placeholder="Password" required="">
+            <div class="checkbox mb-3">
+            </div>
+            <input type="submit" class="btn btn-primary" value="Sign In">
+        </form>
+        <p></p>
+        <a asp-controller="UsersAuth" asp-action="SignUpIndex"><button type="button" class="btn btn-warning">If you didn't sign up already go here</button></a>
+    </div>

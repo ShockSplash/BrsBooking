@@ -28,7 +28,7 @@
     Some pictures
 </div>
 <div>
-    <a asp-action="RoomsStatus" asp-controller="Booking" asp-route-hotelId = "@Model.Id">View rooms status</a>
-    <br>
-    <a asp-action="Index" asp-route-City="@Model.City" asp-controller="Booking">Back to list</a>
+    <a asp-action="RoomsStatus" asp-controller="Booking" asp-route-hotelId = "@Model.Id"><button type="button" class="btn btn-warning">View room status</button></a>
+    <p></p>
+    <a asp-action="Index" asp-route-City="@Model.City" asp-controller="Booking"><button type="button" class="btn btn-dark">Back to list</button></a>
 </div>
