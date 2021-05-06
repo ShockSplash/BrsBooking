@@ -8,5 +8,7 @@ namespace Booking.Services.Reservation
     public interface IReserve
     {
         public void Reserve(int? id, bookingContext db, string login);
+
+        
     }
 }
