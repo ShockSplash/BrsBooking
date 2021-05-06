@@ -8,9 +8,10 @@ namespace Booking
 {
     public partial class JoinResult
     {
-        public JoinResult(int id, string name, string city, string description, DateTime begindate, DateTime enddate)
+        public JoinResult(int id, int idofroom, string name, string city, string description, DateTime begindate, DateTime enddate)
         {
             Id = id; 
+            Idofroom = idofroom;
             Name = name; 
             City = city;
             Description = description;
@@ -19,6 +20,7 @@ namespace Booking
         }
 
         public int Id { get; set; }
+        public int Idofroom { get; set; }
         public string Name { get; set; }
         public string City { get; set; }
         public string Description { get; set; }

@@ -32,9 +32,9 @@ namespace Booking.Controllers.Booking
             if(beginDate < DateTime.Now.Date)
                 return NotFound("Please enter the newest date");
             
-            MyBooking.Begindate = beginDate;
-            MyBooking.Enddate = endDate;
-            MyBooking.IsFree = true;
+            var booking = new UserBooking(beginDate, endDate);
+            UserBooking.bd = beginDate;
+            UserBooking.ed = endDate;
 
             var query = from h in _bookingContext.Hotels
                         .Where(h => h.City == city )
@@ -46,6 +46,7 @@ namespace Booking.Controllers.Booking
                 select new JoinResult
                 (
                     h.Id,
+                    r.Id,
                     h.Name,
                     h.City,
                     h.Description,
@@ -57,19 +58,34 @@ namespace Booking.Controllers.Booking
 
             foreach(var item in result)
             {
-                if( item.Begindate <= MyBooking.Enddate && item.Enddate >= MyBooking.Begindate )
-                    MyBooking.IsFree = false;
+                if( item.Begindate <= booking.Enddate && item.Enddate >= booking.Begindate)
+                    booking.IsFree = false;
+                else
+                {
+                    booking.Ids.Add(new KeyValuePair<int, int>(item.Id, item.Idofroom));
+                }
             }
             
 
-            if(MyBooking.IsFree == false)
+            if(booking.IsFree == false)
                 return NotFound("No hotel on that time");
             else
             {
-                //Нужно создать список отелей с указанной датой но голова отказывает после дня кодинга
-                return NotFound("We have hotel for you");
+                var bookings = new List<UserBooking>();   
+                foreach(var item in booking.Ids)
+                {
+                    Console.WriteLine("{0} {1}", item.Key, item.Value);
+                    var b = new UserBooking(beginDate, endDate);
+                    var bContext = _bookingContext.Hotels.FirstOrDefault(h => h.Id == item.Key);
+                    b.Name = bContext.Name;
+                    b.City = bContext.City;
+                    b.Description = bContext.Description;
+                    b.Id = item.Key;
+
+                    bookings.Add(b);
+                }
+                return View(bookings);
             }
-            return View();
         }
         // 
         // GET: /Booking/Details
