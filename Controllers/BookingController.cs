@@ -131,7 +131,9 @@ namespace Booking.Controllers.Booking
         {
             if (User.Identity.Name != null)
             {
-                _reserve.Reserve(id, _bookingContext, User.Identity.Name);
+                booking book = _reserve.Reserve(id, _bookingContext, User.Identity.Name);
+                if (!_reserve.Check(id, _bookingContext, book))
+                    return NotFound("The room has already been booked for the selected date");
                 return RedirectToRoute(new { controller = "UsersAuth", action = "Profile"}); 
             }
             else

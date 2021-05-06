@@ -8,7 +8,22 @@ namespace Booking.Services.Reservation
 {
     public class Reserve : IReserve
     {
-        void IReserve.Reserve(int? id, bookingContext db, string login)
+        public bool Check(int? id, bookingContext db, booking book)
+        {
+            foreach (var item in db.Bookings)
+            {
+                if (item.Idofroom == id && (item.Begindate == book.Begindate)
+                    && (item.Enddate == book.Enddate))
+                    return false;
+            }
+
+            db.Bookings.Add(book);
+            db.SaveChanges();
+
+            return true;
+        }
+
+        booking IReserve.Reserve(int? id, bookingContext db, string login)
         {
             User user = db.Users.FirstOrDefault(u => u.Login == login);
             Room room = db.Rooms.FirstOrDefault(r => r.Id == id);
@@ -23,8 +38,7 @@ namespace Booking.Services.Reservation
             book.Idofhotel = room.HId;
             book.Id = db.Bookings.Max(a => a.Id) + 1;
 
-            db.Bookings.Add(book);
-            db.SaveChanges();
+            return book;
         }
     }
 }
