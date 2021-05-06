@@ -23,12 +23,54 @@
             @Html.DisplayFor(model => model.City)
         </dd>
     </dl>
-    @Html.DisplayFor(model => model.Description)
     <br />
-    Some pictures
 </div>
 <div>
     <a asp-action="RoomsStatus" asp-controller="Booking" asp-route-hotelId = "@Model.Id"><button type="button" class="btn btn-warning">View room status</button></a>
     <p></p>
     <a asp-action="Index" asp-route-City="@Model.City" asp-controller="Booking"><button type="button" class="btn btn-dark">Back to list</button></a>
+</div>
+<p></p>
+<div class="container marketing">
+
+    <div class="row featurette">
+        <div class="col-md-7">
+            <h2 class="featurette-heading">Welcome to @Model.Name ! <span class="text-muted">It will blow your mind.</span></h2>
+            <p class="lead">This is one of the best hotels in Europe!</p>
+        </div>
+        <div class="col-md-5">
+            <img src="/img/Hotels/Hotel_@(Model.Id)_1.jpg" alt="Alternate Text" />
+
+        </div>
+    </div>
+
+    <hr class="featurette-divider">
+
+    <div class="row featurette">
+        <div class="col-md-7 order-md-2">
+            <h2 class="featurette-heading">Oh yeah, it is that good. <span class="text-muted">@Model.Name :</span></h2>
+            <p class="lead">@Model.Description</p>
+        </div>
+        <div class="col-md-5 order-md-1">
+            <img src="/img/Hotels/Hotel_@(Model.Id)_2.jpg" alt="Alternate Text" />
+
+        </div>
+    </div>
+
+    <hr class="featurette-divider">
+
+    <div class="row featurette">
+        <div class="col-md-7">
+            <h2 class="featurette-heading">Hurry up to book the best room! <span class="text-muted">Expert selection.</span></h2>
+            <p class="lead">Huge selection of rooms for any company!</p>
+        </div>
+        <div class="col-md-5">
+            <img src="/img/Hotels/Hotel_@(Model.Id)_3.jpg" alt="Alternate Text" />
+        </div>
+    </div>
+
+    <hr class="featurette-divider">
+
+    <!-- /END THE FEATURETTES -->
+
 </div>

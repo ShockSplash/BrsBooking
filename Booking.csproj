@@ -20,4 +20,9 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.5.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\img\Rooms\" />
+    <Folder Include="wwwroot\img\Hotels\" />
+  </ItemGroup>
+
 </Project>

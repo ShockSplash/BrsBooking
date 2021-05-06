@@ -20,32 +20,52 @@
 </dl>
 
 <div>My Bookings</div>
+
 @{ if (Model.Bookings != null)
-    {<h3>Active:</h3>
+    {
+        <h3>Active:</h3>
         foreach (var item in Model.Bookings)
             @if (DateTime.Now.Date < item.Enddate)
             {
-                <ul>
-                    <li>
-                        From  @item.Begindate to @item.Enddate; number of room: @{Room rm = Model.rooms.FirstOrDefault(u => u.Id == item.Idofroom);}  @rm.Id .
-                        In hotel: @Model.hotels.FirstOrDefault(h => h.Id == rm.HId).Name;
-                    </li>
-                </ul>}
+                <div class="card" style="width: 18rem;">
+                    <img src="/img/Rooms/room_@(Model.rooms.FirstOrDefault(u => u.Id == item.Idofroom).Id).jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Reservation information</h5>
+                        <p class="card-text">Seats:@(Model.rooms.FirstOrDefault(u => u.Id == item.Idofroom).Seats).</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Date: From @item.Begindate to @item.Enddate</li>
+                        <li class="list-group-item">Number of room: @{Room rm = Model.rooms.FirstOrDefault(u => u.Id == item.Idofroom);} @rm.Id</li>
+                        <li class="list-group-item">In Hotel: @Model.hotels.FirstOrDefault(h => h.Id == rm.HId).Name</li>
+                    </ul>
+                </div>
+                <p></p>
+            }
 
-                            {<h3>History:</h3>
-                                foreach (var item in Model.Bookings)
-                @if (DateTime.Now.Date > item.Enddate)
-                {
-                    <ul>
-                        <li>
-                            From  @item.Begindate to @item.Enddate; number of room: @{Room rm = Model.rooms.FirstOrDefault(u => u.Id == item.Idofroom);}  @rm.Id .
-                            In hotel: @Model.hotels.FirstOrDefault(h => h.Id == rm.HId).Name;
-                        </li>
-                    </ul>}
-                                    }
-                                }
-                                else
-                                {
-<p> No bookings yet!</p>
-                                    }
-                                }
+            {
+                <h3>History:</h3>
+                foreach (var item in Model.Bookings)
+                    @if (DateTime.Now.Date > item.Enddate)
+                    {
+                        <div class="card" style="width: 18rem;">
+                            <img src="/img/Rooms/room_@(Model.rooms.FirstOrDefault(u => u.Id == item.Idofroom).Id).jpg" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">Reservation information</h5>
+                                <p class="card-text">Seats:@(Model.rooms.FirstOrDefault(u => u.Id == item.Idofroom).Seats) .</p>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Date: From @item.Begindate to @item.Enddate</li>
+                                <li class="list-group-item">Number of room: @{Room rm = Model.rooms.FirstOrDefault(u => u.Id == item.Idofroom);} @rm.Id</li>
+                                <li class="list-group-item">In Hotel: @Model.hotels.FirstOrDefault(h => h.Id == rm.HId).Name</li>
+                            </ul>
+                        </div>
+                        <p></p>
+                    }
+                }
+            }
+            else
+            {
+                <p> No bookings yet!</p>
+            }
+}
+</table>
