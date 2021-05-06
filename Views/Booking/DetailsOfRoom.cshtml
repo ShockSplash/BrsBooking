@@ -10,24 +10,33 @@
     <h4>Room</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Seats)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Seats)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Price)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Price)
     </dl>
 </div>
-<div>
-    <form method="post" asp-action="Reserve" asp-controller="Booking">
-        <p>
-            <input type="hidden" name="id" value="@Model.Id" />
-            <input type="submit" class="btn btn-success" value="Забронировать" />
-        </p>
-    </form>
-</div>
+@{ if (UserBooking.bd.ToString() == "01.01.0001 0:00:00" || UserBooking.ed.ToString() == "01.01.0001 0:00:00")
+    {
+        <h4>To book a room, you need to go back to the main page and select a date!</h4>
+        <p></p>
+        <a asp-controller="Home" asp-action="Index"><button type="button" class="btn btn-danger">Back to home</button></a>
+    }
+    else
+    {
+        <div>
+            <form method="post" asp-action="Reserve" asp-controller="Booking">
+                <p>
+                    <input type="hidden" name="id" value="@Model.Id" />
+                    <input type="submit" class="btn btn-success" value="Забронировать" />
+                </p>
+            </form>
+        </div>}
+}
