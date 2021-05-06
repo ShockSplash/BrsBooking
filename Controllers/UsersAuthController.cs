@@ -45,7 +45,7 @@ namespace Booking.Controllers.UsersAuth
         public IActionResult SignUp(string name, string login, string password)
         {
             if(_bookingContext.Users.Any(u => u.Login == login))
-                    return NotFound("User already exists");
+                return View("ErrorMessage", new Error("User already exists"));
 
             _sign.SignU(name, login, password, _bookingContext);
             return View();
@@ -64,7 +64,7 @@ namespace Booking.Controllers.UsersAuth
                     return RedirectToRoute(new { controller = "Home", action= "Index"});   
                 }
                 else
-                    return NotFound("Wrong password or username");
+                    return View("ErrorMessage", new Error("Oops: wrong password or username"));
         }
         public IActionResult Profile()
         {

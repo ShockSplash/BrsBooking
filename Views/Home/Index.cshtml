@@ -10,9 +10,9 @@
         <form asp-controller="Booking" asp-action="Index" method="post">
             <label>Hotel:</label>
             <input type="text" name="city" asp-route="city" placeholder="city">
-            <input type="date" name="beginDate" asp-route="beginDate" min="">
+            <input type="date" name="beginDate" asp-route="beginDate" value="2000-1-1">
             <input type="date" name="endDate" asp-route="endDate">
-            <input type="number" name="seats" asp-route="seats" placeholder="seats">
+            <input type="number" name="seats" asp-route="seats" placeholder="seats" min="1">
             <input type="submit" class="btn btn-primary" value="Search">
         </form>
 </div>
