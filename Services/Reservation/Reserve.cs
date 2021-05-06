@@ -13,6 +13,7 @@ namespace Booking.Services.Reservation
             User user = db.Users.FirstOrDefault(u => u.Login == login);
             Room room = db.Rooms.FirstOrDefault(r => r.Id == id);
             booking book = new booking();
+            
             book.Idofroom = id;
             book.Begindate = UserBooking.bd;
             book.Enddate = UserBooking.ed;
@@ -20,6 +21,8 @@ namespace Booking.Services.Reservation
             book.IdofroomNavigation = room;
             book.User = user;
             book.Idofhotel = room.HId;
+            book.Id = db.Bookings.Max(a => a.Id) + 1;
+
             db.Bookings.Add(book);
             db.SaveChanges();
         }

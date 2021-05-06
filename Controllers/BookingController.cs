@@ -31,7 +31,9 @@ namespace Booking.Controllers.Booking
                 return NotFound("Please enter the right order of dates");
             if(beginDate < DateTime.Now.Date)
                 return NotFound("Please enter the newest date");
-            
+
+            SeatsCheck.seats = seats;
+
             var booking = new UserBooking(beginDate, endDate);
             UserBooking.bd = beginDate;
             UserBooking.ed = endDate;

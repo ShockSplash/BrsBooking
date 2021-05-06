@@ -18,9 +18,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Description)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Isfreerooms)
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -35,9 +32,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Isfreerooms)
             </td>
             <td>
                 <a asp-action="Details" asp-route-id="@item.Id"><button type="button" class="btn btn-success">Detalis</button></a>

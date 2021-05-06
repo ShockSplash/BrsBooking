@@ -18,7 +18,10 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model)
+{
+    if (item.Seats == SeatsCheck.seats)
+    {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Seats)
@@ -30,6 +33,7 @@
                 <a asp-action="DetailsOfRoom" asp-route-Id="@item.Id"><button type="button" class="btn btn-success">Перейти</button></a>
             </td>
         </tr>
+    }
 }
     </tbody>
 </table>

@@ -5,11 +5,8 @@ using System.Threading.Tasks;
 
 namespace Booking.Models
 {
-    public class Date
+    public class SeatsCheck
     {
-        public static DateTime beginDate;
-
-        public static DateTime endDate;
-
+        public static int seats;
     }
 }
