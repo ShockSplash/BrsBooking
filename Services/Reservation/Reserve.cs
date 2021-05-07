@@ -12,8 +12,8 @@ namespace Booking.Services.Reservation
         {
             foreach (var item in db.Bookings)
             {
-                if (item.Idofroom == id && (item.Begindate == book.Begindate)
-                    && (item.Enddate == book.Enddate))
+                if (item.Idofroom == id && (item.Begindate <=
+                     book.Enddate && item.Enddate >= book.Begindate))
                     return false;
             }
 
@@ -27,15 +27,17 @@ namespace Booking.Services.Reservation
         {
             User user = db.Users.FirstOrDefault(u => u.Login == login);
             Room room = db.Rooms.FirstOrDefault(r => r.Id == id);
-            booking book = new booking();
-            
-            book.Idofroom = id;
-            book.Begindate = UserBooking.bd;
-            book.Enddate = UserBooking.ed;
-            book.IdofroomNavigation = room;
-            book.User = user;
-            book.Idofhotel = room.HId;
-            book.Id = db.Bookings.Max(a => a.Id) + 1;
+
+            booking book = new()
+            {
+                Idofroom = id,
+                Begindate = UserBooking.bd,
+                Enddate = UserBooking.ed,
+                IdofroomNavigation = room,
+                User = user,
+                Idofhotel = room.HId,
+                Id = db.Bookings.Max(a => a.Id) + 1
+            };
 
             return book;
         }

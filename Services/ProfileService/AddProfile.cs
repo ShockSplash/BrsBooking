@@ -14,9 +14,11 @@ namespace Booking.Services.ProfileService
             if (userName != null && _bookingContext.Bookings != null )
             {
                 User bookUs = _bookingContext.Users.FirstOrDefault(u => u.Login == userName);
+
                 var book = _bookingContext.Bookings.Where(u => u.Userid == bookUs.Id).ToList();
                 if (book.Count == 0)
                     return new UserBooking(bookUs,null,null,null);
+                
                 var rooms = _bookingContext.Rooms.Where(u => u.Id == book[0].Idofroom).ToList();
                 for (int i = 1; i < book.Count; i++)
                 {
@@ -24,6 +26,7 @@ namespace Booking.Services.ProfileService
                 }
                 if (rooms.Count == 0)
                     return new UserBooking(bookUs, null, null, null);
+                
                 var hotels = _bookingContext.Hotels.Where(u => u.Id == rooms[0].HId).ToList();
                 for (int i = 1; i < rooms.Count; i++)
                 {
@@ -31,11 +34,11 @@ namespace Booking.Services.ProfileService
                 }
                 if (hotels == null)
                     return new UserBooking(bookUs, rooms, null, null);
+                
                 var bookings = _bookingContext.Bookings.Where(u => u.Userid == bookUs.Id).ToList();
-
-
                 Console.WriteLine(_bookingContext.Users.FirstOrDefault(u => u.Login == userName).Name);
-                UserBooking ub = new UserBooking(bookUs, rooms, hotels, bookings);
+
+                UserBooking ub = new(bookUs, rooms, hotels, bookings);
 
                 return ub;
             }
