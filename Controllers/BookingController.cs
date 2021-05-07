@@ -2,12 +2,9 @@ using Booking.Models;
 using Booking.Services.Reservation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
-using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 namespace Booking.Controllers.Booking
@@ -35,7 +32,7 @@ namespace Booking.Controllers.Booking
             if(beginDate < DateTime.Now.Date)
                 return View("ErrorMessage", new Error("Please enter the newest date"));
 
-            SeatsCheck.seats = seats;
+            UserBooking.seats = seats;
 
             var booking = new UserBooking(beginDate, endDate);
             UserBooking.bd = beginDate;
@@ -133,7 +130,7 @@ namespace Booking.Controllers.Booking
             {
                 booking book = _reserve.Reserve(id, _bookingContext, User.Identity.Name);
                 if (!_reserve.Check(id, _bookingContext, book))
-                    return NotFound("The room has already been booked for the selected date");
+                    return View("ErrorMessage", new Error("Oops: The room has already been booked for the selected date :("));
                 return RedirectToRoute(new { controller = "UsersAuth", action = "Profile"}); 
             }
             else
