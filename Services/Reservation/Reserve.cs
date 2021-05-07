@@ -32,7 +32,6 @@ namespace Booking.Services.Reservation
             book.Idofroom = id;
             book.Begindate = UserBooking.bd;
             book.Enddate = UserBooking.ed;
-            book.Userid = user.Id;
             book.IdofroomNavigation = room;
             book.User = user;
             book.Idofhotel = room.HId;
