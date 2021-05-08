@@ -1,4 +1,4 @@
-@model IEnumerable<UserBooking>
+@model List<Hotel>
 
 @{
     ViewData["Title"] = "Index";
@@ -10,13 +10,13 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                Hotel name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.City)
+                City
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                Description
             </th>
             <th></th>
         </tr>
