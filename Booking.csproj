@@ -22,7 +22,6 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\img\Rooms\" />
-    <Folder Include="wwwroot\img\Hotels\" />
   </ItemGroup>
 
 </Project>

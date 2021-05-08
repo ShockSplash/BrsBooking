@@ -6,6 +6,7 @@
     <title>@ViewData["Title"] - Booking</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="/css/animate.css" />
 </head>
 <body>
     <header>
@@ -19,33 +20,33 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark animate__animated animate__headShake" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark animate__animated animate__headShake" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                         @{ if (!User.Identity.IsAuthenticated)
                             {
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="UsersAuth" asp-action="SignInIndex">Sign in</a>
+                            <a class="nav-link text-dark animate__animated animate__headShake" asp-area="" asp-controller="UsersAuth" asp-action="SignInIndex">Sign in</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="UsersAuth" asp-action="SignUpIndex">Sign up</a>
+                            <a class="nav-link text-dark animate__animated animate__headShake" asp-area="" asp-controller="UsersAuth" asp-action="SignUpIndex">Sign up</a>
                         </li>}
                             else
                             {
                      
                          <li class="nav-item">
-                             <a class="nav-link text-dark" asp-area="" asp-controller="UsersAuth" asp-action="Profile">Hello, @User.Identity.Name</a>
+                             <a class="nav-link text-dark animate__animated animate__headShake" asp-area="" asp-controller="UsersAuth" asp-action="Profile">Hello, @User.Identity.Name</a>
                          </li>
                                 
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="UsersAuth" asp-action="Logout">Logout</a>
+                            <a class="nav-link text-dark animate__animated animate__headShake" asp-area="" asp-controller="UsersAuth" asp-action="Logout">Logout</a>
                         </li>
                             } 
                            }
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="UsersAuth" asp-action="Profile">Profile</a>
+                            <a class="nav-link text-dark animate__animated animate__headShake" asp-area="" asp-controller="UsersAuth" asp-action="Profile">Profile</a>
                         </li>
                     </ul>
                 </div>

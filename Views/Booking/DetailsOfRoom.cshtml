@@ -27,7 +27,7 @@
     {
         <h4>To book a room, you need to go back to the main page and select a date!</h4>
         <p></p>
-        <a asp-controller="Home" asp-action="Index"><button type="button" class="btn btn-danger">Back to home</button></a>
+        <a asp-controller="Home" asp-action="Index"><button type="button" class="btn btn-danger animate__animated animate__pulse">Back to home</button></a>
     }
     else
     {
@@ -35,7 +35,7 @@
             <form method="post" asp-action="Reserve" asp-controller="Booking">
                 <p>
                     <input type="hidden" name="id" value="@Model.Id" />
-                    <input type="submit" class="btn btn-success" value="Забронировать" />
+                    <input type="submit" class="btn btn-success animate__animated animate__pulse" value="Забронировать" />
                 </p>
             </form>
         </div>}
