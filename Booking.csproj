@@ -21,7 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\Search service\" />
     <Folder Include="wwwroot\img\Rooms\" />
     <Folder Include="wwwroot\img\Hotels\" />
   </ItemGroup>

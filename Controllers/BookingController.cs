@@ -1,5 +1,6 @@
 using Booking.Models;
 using Booking.Services.Reservation;
+using Booking.Services.Search_service;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -14,10 +15,13 @@ namespace Booking.Controllers.Booking
 
         private readonly bookingContext _bookingContext;
         private readonly IReserve _reserve;
-        public BookingController(bookingContext context, IReserve reserve)
+        private readonly ISearch _search;
+
+        public BookingController(bookingContext context, IReserve reserve, ISearch search)
         { 
             _bookingContext = context;
             _reserve = reserve;
+            _search = search;
         }
         // 
         // GET: /Booking/
@@ -36,52 +40,13 @@ namespace Booking.Controllers.Booking
 
             UserBooking.seats = seats;
 
-            var booking = new UserBooking(beginDate, endDate);
             UserBooking.bd = beginDate;
             UserBooking.ed = endDate;
 
-            var hotels = _bookingContext.Hotels.Where(h => h.City == city).ToList();
+            var hotels = _search.SearchFilter(_bookingContext, city, beginDate, endDate, seats);
             if (hotels == null)
-                return View("ErrorMessage", new Error("No hotel on this city"));
-
-            List<Room> needRooms = new List<Room>();
-
-            foreach (var room in _bookingContext.Rooms)
-            {
-                foreach (var hotel in hotels)
-                {
-                    if (hotel.Id == room.HId && room.Seats == seats)
-                        needRooms.Add(room);
-                }
-            }
-
-            List<Room> result = new List<Room>();
-            //a.start <= b.end AND a.end >= b.start
-            foreach (var room in needRooms)
-            {
-                bool isInperiod = false;
-                foreach (var item in _bookingContext.Bookings)
-                {
-                    if ((room.Id == item.Idofroom && (beginDate <= item.Enddate && endDate >= item.Begindate)))
-                    {
-                        isInperiod = true;
-                    }
-
-                }
-                if (!isInperiod)
-                    result.Add(room);
-            }
-            if (result.Count == 0)
-                return View("ErrorMessage", new Error("No hotel on that time"));
-            List<Hotel> hotelResult = new List<Hotel>();
-
-            JoinResult.result = result;
-
-            foreach (var item in result)
-            {
-                hotelResult.Add(_bookingContext.Hotels.FirstOrDefault(h => h.Id == item.HId));
-            }
-            return View(hotelResult.Distinct().ToList());
+                return View("ErrorMessage", new Error("No rooms are available"));
+            return View(hotels);
         }
         // 
         // GET: /Booking/Details
@@ -126,7 +91,7 @@ namespace Booking.Controllers.Booking
 
         public IActionResult RoomsStatus(int hotelId)
         {
-            return View(JoinResult.result.Where(h=> h.Seats == UserBooking.seats).ToList());
+            return View(UserBooking.result.Where(h=> h.Seats == UserBooking.seats && h.HId == hotelId).ToList());
         }
     }
 }
