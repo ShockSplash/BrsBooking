@@ -1,5 +1,6 @@
 using Booking.Models;
 using Booking.Services.Reservation;
+using Booking.Services.Search_service;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -14,10 +15,13 @@ namespace Booking.Controllers.Booking
 
         private readonly bookingContext _bookingContext;
         private readonly IReserve _reserve;
-        public BookingController(bookingContext context, IReserve reserve)
+        private readonly ISearch _search;
+
+        public BookingController(bookingContext context, IReserve reserve, ISearch search)
         { 
             _bookingContext = context;
             _reserve = reserve;
+            _search = search;
         }
         // 
         // GET: /Booking/
@@ -31,72 +35,18 @@ namespace Booking.Controllers.Booking
                 return View("ErrorMessage", new Error("Please enter the right order of dates"));
             if(beginDate < DateTime.Now.Date)
                 return View("ErrorMessage", new Error("Please enter the newest date"));
+            if (seats <= 0 || seats > 4)
+                return View("ErrorMessage", new Error("you entered the wrong number of seats"));
 
             UserBooking.seats = seats;
 
-            var booking = new UserBooking(beginDate, endDate);
             UserBooking.bd = beginDate;
             UserBooking.ed = endDate;
 
-            var rooms = _bookingContext.Rooms
-                .Where(r => r.HId == _bookingContext.Hotels
-                .FirstOrDefault(h => h.City == city).Id);
-            rooms = rooms.Where(r => r.Seats == seats);
-            foreach(var item in rooms)
-                Console.WriteLine(item.Id);
-            
-            var query = from h in _bookingContext.Hotels
-                        .Where(h => h.City == city )
-                join r in _bookingContext.Rooms
-                        .Where(r => r.Seats == seats) 
-                    on h.Id equals r.HId
-                join b in _bookingContext.Bookings
-                    on r.Id equals b.Idofroom
-                select new JoinResult
-                (
-                    h.Id,
-                    r.Id,
-                    h.Name,
-                    h.City,
-                    h.Description,
-                    b.Begindate,
-                    b.Enddate
-                );
-
-            var result = query.AsEnumerable().Where(q => q.Id > 0).ToList();
-
-            /*foreach(var item in result)
-                Console.WriteLine(item);*/
-
-            foreach(var item in result)
-            {
-                if( item.Begindate <= booking.Enddate && item.Enddate >= booking.Begindate)
-                    booking.IsFree = false;
-                else
-                {
-                    booking.Ids.Add(new KeyValuePair<int, int>(item.Id, item.Idofroom));
-                }
-            }
-            
-            if(booking.IsFree == false)
-                return View("ErrorMessage", new Error("No hotel on that time"));
-            else
-            {
-                var bookings = new List<UserBooking>();   
-                foreach(var item in booking.Ids)
-                {
-                    Console.WriteLine("{0} {1}", item.Key, item.Value);
-                    var b = new UserBooking(beginDate, endDate);
-                    var bContext = _bookingContext.Hotels.FirstOrDefault(h => h.Id == item.Key);
-                    b.Name = bContext.Name;
-                    b.City = bContext.City;
-                    b.Description = bContext.Description;
-                    b.Id = item.Key;
-
-                    bookings.Add(b);
-                }
-                return View(bookings);
-            }
+            var hotels = _search.SearchFilter(_bookingContext, city, beginDate, endDate, seats);
+            if (hotels == null)
+                return View("ErrorMessage", new Error("No rooms are available"));
+            return View(hotels);
         }
         // 
         // GET: /Booking/Details
@@ -141,7 +91,7 @@ namespace Booking.Controllers.Booking
 
         public IActionResult RoomsStatus(int hotelId)
         {
-            return View(_bookingContext.Rooms.Where(r => r.HId == hotelId).ToList());
+            return View(UserBooking.result.Where(h=> h.Seats == UserBooking.seats && h.HId == hotelId).ToList());
         }
     }
 }

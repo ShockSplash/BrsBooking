@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Booking.Services.ProfileService;
 using Booking.Services.Reservation;
 using Booking.Services.SignUp;
+using Booking.Services.Search_service;
 
 namespace Booking
 {
@@ -37,6 +38,7 @@ namespace Booking
             services.AddTransient<IProfile, AddProfile>();
             services.AddTransient<IReserve, Reserve>();
             services.AddTransient<ISign, Sign>();
+            services.AddTransient<ISearch, Search>();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options => //CookieAuthenticationOptions

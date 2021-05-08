@@ -1,4 +1,4 @@
-@model  IEnumerable<Room>
+@model  List<Room>
 
 @{
     ViewData["Title"] = "Avalible now";
@@ -9,10 +9,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Seats)
+                Seats
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Price)
+               Price
             </th>
             <th></th>
         </tr>
