@@ -35,7 +35,7 @@ namespace Booking.Controllers.Booking
                 return View("ErrorMessage", new Error("Please enter the right order of dates"));
             if(beginDate < DateTime.Now.Date)
                 return View("ErrorMessage", new Error("Please enter the newest date"));
-            if (seats <= 0 || seats > 4)
+            if (seats <= 0 || seats > 5)
                 return View("ErrorMessage", new Error("you entered the wrong number of seats"));
 
             UserBooking.seats = seats;
@@ -46,9 +46,10 @@ namespace Booking.Controllers.Booking
             var hotels = _search.SearchFilter(_bookingContext, city, beginDate, endDate, seats);
             if (hotels == null)
                 return View("ErrorMessage", new Error("No rooms are available"));
+
             return View(hotels);
         }
-        // 
+       
         // GET: /Booking/Details
         public async Task<IActionResult> Details(int? id)
         {
