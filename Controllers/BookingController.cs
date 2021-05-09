@@ -38,21 +38,28 @@ namespace Booking.Controllers.Booking
             if (seats <= 0 || seats > 5)
                 return View("ErrorMessage", new Error("you entered the wrong number of seats"));
 
-            UserBooking.seats = seats;
-
-            UserBooking.bd = beginDate;
-            UserBooking.ed = endDate;
 
             var hotels = _search.SearchFilter(_bookingContext, city, beginDate, endDate, seats);
             if (hotels == null)
                 return View("ErrorMessage", new Error("No rooms are available"));
 
-            return View(hotels);
+            var result = new List<CompositeModel>();
+            foreach(var item in hotels)
+            {
+                result.Add(new CompositeModel(beginDate, endDate){
+                    Hotel = item,
+                    Seats = seats
+                    });
+            }
+            //Console.WriteLine("{0} {1}", beginDate, endDate);
+            
+            return View(result);
         }
        
         // GET: /Booking/Details
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id, DateTime bd, DateTime ed, int seats)
         {
+            Console.WriteLine("{0} {1} {2} {3}", id, bd, ed, seats);
             if(id == null)
                 return View("ErrorMessage", new Error("Id is null[System error]"));
 
@@ -60,10 +67,14 @@ namespace Booking.Controllers.Booking
 
                 if(hotel == null)
                     return View("ErrorMessage", new Error("No hotels on criteria"));
-                return View(hotel);
+                
+                return View(new CompositeModel(bd, ed){
+                    Hotel = hotel,
+                    Seats = seats
+                });
         }
 
-        public async Task<IActionResult> DetailsOfRoom(int? id)
+        public async Task<IActionResult> DetailsOfRoom(int? id, DateTime beginDate, DateTime endDate)
         {
             if (id == null)
                 return View("ErrorMessage", new Error("Id is null[System error]"));
@@ -71,15 +82,18 @@ namespace Booking.Controllers.Booking
             var room = await _bookingContext.Rooms.FirstOrDefaultAsync(m => m.Id == id);
             if (room == null)
                 return View("ErrorMessage", new Error("No such rooms"));
-            return View(room);
+
+            return View(new CompositeModel(beginDate, endDate){
+                Room = room
+            });
         }
 
         [HttpPost]
-        public IActionResult Reserve(int? id)
+        public IActionResult Reserve(int? id, DateTime beginDate, DateTime endDate)
         {
             if (User.Identity.Name != null)
             {
-                booking book = _reserve.Reserve(id, _bookingContext, User.Identity.Name);
+                booking book = _reserve.Reserve(id, _bookingContext, User.Identity.Name, beginDate, endDate);
                 if (!_reserve.Check(id, _bookingContext, book))
                     return View("ErrorMessage", new Error("Oops: The room has already been booked for the selected date :("));
                 return RedirectToRoute(new { controller = "UsersAuth", action = "Profile"}); 
@@ -90,9 +104,18 @@ namespace Booking.Controllers.Booking
             }
         }
 
-        public IActionResult RoomsStatus(int hotelId)
+        public IActionResult RoomsStatus(int hotelId, DateTime beginDate, DateTime endDate, int seats)
         {
-            return View(UserBooking.result.Where(h=> h.Seats == UserBooking.seats && h.HId == hotelId).ToList());
+            var rooms = _bookingContext.Rooms.Where(r => r.Seats == seats && r.HId == hotelId).ToList();
+            var cmList = new List<CompositeModel>();
+            foreach(var item in rooms)
+            {
+                cmList.Add(new CompositeModel(beginDate, endDate){
+                    Room = item,
+                    Seats = item.Seats
+                });
+            }
+            return View(cmList);
         }
     }
 }

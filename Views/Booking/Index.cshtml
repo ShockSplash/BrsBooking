@@ -1,4 +1,4 @@
-@model List<Hotel>
+@model List<CompositeModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -25,16 +25,26 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                @Html.DisplayFor(modelItem => item.Hotel.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.City)
+                @Html.DisplayFor(modelItem => item.Hotel.City)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Description)
+                @Html.DisplayFor(modelItem => item.Hotel.Description)
             </td>
             <td>
-                <a asp-action="Details"  asp-route-id="@item.Id"><button type="button" class="btn btn-success animate__animated animate__pulse">Detalis</button></a>
+                @Html.DisplayFor(modelItem => item.BeginDate)
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.Hotel.Id" 
+                                        asp-route-bd = "@item.BeginDate.ToString()"
+                                        asp-route-ed = "@item.EndDate.Date"
+                                        asp-route-seats = "@item.Seats">
+                    <button type="button" class="btn btn-success animate__animated animate__pulse">
+                        Detalis
+                    </button>
+                </a>
             </td>
         </tr>
 }

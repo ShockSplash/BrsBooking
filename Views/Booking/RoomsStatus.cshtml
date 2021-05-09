@@ -1,4 +1,4 @@
-@model  List<Room>
+@model List<CompositeModel>
 
 @{
     ViewData["Title"] = "Avalible now";
@@ -20,20 +20,23 @@
     <tbody>
 @foreach (var item in Model)
 {
-    if (item.Seats == UserBooking.seats)
-    {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Seats)
+                @Html.DisplayFor(modelItem => item.Room.Seats)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Price) ₽
+                @Html.DisplayFor(modelItem => item.Room.Price) ₽
             </td>
             <td>
-                <a asp-action="DetailsOfRoom" asp-route-Id="@item.Id"><button type="button" class="btn btn-success animate__animated animate__pulse">Перейти</button></a>
+                <a asp-action="DetailsOfRoom"   asp-route-Id="@item.Room.Id"
+                                                asp-route-beginDate = "@item.BeginDate"        
+                                                asp-route-endDate = "@item.EndDate">
+                    <button type="button" class="btn btn-success animate__animated animate__pulse">
+                        Перейти
+                    </button>
+                </a>
             </td>
         </tr>
-    }
 }
     </tbody>
 </table>

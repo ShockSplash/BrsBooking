@@ -1,4 +1,4 @@
-﻿@model Booking.Room
+﻿@model CompositeModel
 
 @{
     ViewData["Title"] = "View";
@@ -11,19 +11,19 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Seats)
+            @Html.DisplayNameFor(model => model.Room.Seats)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Seats)
+            @Html.DisplayFor(model => model.Room.Seats)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
+            @Html.DisplayNameFor(model => model.Room.Price)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Price)
+            @Html.DisplayFor(model => model.Room.Price)
     </dl>
 </div>
-@{ if (UserBooking.bd.ToString() == "01.01.0001 0:00:00" || UserBooking.ed.ToString() == "01.01.0001 0:00:00")
+@{ if (@Model.BeginDate.ToString() == "01.01.0001 0:00:00" || @Model.EndDate.ToString() == "01.01.0001 0:00:00")
     {
         <h4>To book a room, you need to go back to the main page and select a date!</h4>
         <p></p>
@@ -34,7 +34,9 @@
         <div>
             <form method="post" asp-action="Reserve" asp-controller="Booking">
                 <p>
-                    <input type="hidden" name="id" value="@Model.Id" />
+                    <input type="hidden" name="id" value="@Model.Room.Id" />
+                    <input type="hidden" name="beginDate" value="@Model.BeginDate" />
+                    <input type="hidden" name="endDate" value="@Model.EndDate" />
                     <input type="submit" class="btn btn-success animate__animated animate__pulse" value="Забронировать" />
                 </p>
             </form>

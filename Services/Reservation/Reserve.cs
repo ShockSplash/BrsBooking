@@ -23,7 +23,8 @@ namespace Booking.Services.Reservation
             return true;
         }
 
-        booking IReserve.Reserve(int? id, bookingContext db, string login)
+        booking IReserve.Reserve(int? id, bookingContext db, string login, 
+        DateTime beginDate, DateTime endDate)
         {
             User user = db.Users.FirstOrDefault(u => u.Login == login);
             Room room = db.Rooms.FirstOrDefault(r => r.Id == id);
@@ -31,8 +32,8 @@ namespace Booking.Services.Reservation
             booking book = new()
             {
                 Idofroom = id,
-                Begindate = UserBooking.bd,
-                Enddate = UserBooking.ed,
+                Begindate = beginDate,
+                Enddate = endDate,
                 IdofroomNavigation = room,
                 User = user,
                 Idofhotel = room.HId,

@@ -45,8 +45,6 @@ namespace Booking.Services.Search_service
                 return null;
             List<Hotel> hotelResult = new List<Hotel>();
 
-            UserBooking.result = result;
-
             foreach (var item in result)
             {
                 hotelResult.Add(db.Hotels.FirstOrDefault(h => h.Id == item.HId));
