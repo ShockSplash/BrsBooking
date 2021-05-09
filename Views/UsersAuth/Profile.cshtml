@@ -32,10 +32,12 @@
                     <div class="card-body">
                         <h5 class="card-title">Reservation information</h5>
                         <p class="card-text">Seats:@(Model.rooms.FirstOrDefault(u => u.Id == item.Idofroom).Seats).</p>
+                       
                     </div>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">Date: From @item.Begindate to @item.Enddate</li>
                         <li class="list-group-item">Number of room: @{Room rm = Model.rooms.FirstOrDefault(u => u.Id == item.Idofroom);} @rm.Id</li>
+                        <li class="list-group-item">Price: @rm.Price</li>
                         <li class="list-group-item">In Hotel: @Model.hotels.FirstOrDefault(h => h.Id == rm.HId).Name</li>
                     </ul>
                 </div>

@@ -39,6 +39,8 @@ namespace Booking.Controllers.Booking
                return View("ErrorMessage", new Error("no hotels with such number of seats"));
             if(beginDate > endDate)
                 return View("ErrorMessage", new Error("Please enter the right order of dates"));
+            if(beginDate == endDate)
+                return View("ErrorMessage", new Error("Please choose different dates"));
             if(beginDate < DateTime.Now.Date)
                 return View("ErrorMessage", new Error("Please enter the newest date"));
             if (seats <= 0 || seats > 5)
@@ -78,8 +80,6 @@ namespace Booking.Controllers.Booking
         }
         public IActionResult RoomsStatus(int hotelId, string bd, string ed, int seats)
         {    
-            
-
             var rooms = _bookingContext.Rooms.Where(r => r.Seats == seats && r.HId == hotelId).ToList();
             var cmList = new List<CompositeModel>();
             foreach(var item in rooms)
@@ -102,7 +102,7 @@ namespace Booking.Controllers.Booking
             if (room == null)
                 return View("ErrorMessage", new Error("No such rooms"));
 
-            return View(new CompositeModel(ed, ed){
+            return View(new CompositeModel(bd, ed){
                 Room = room
             });
         }

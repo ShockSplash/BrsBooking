@@ -21,9 +21,22 @@
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Room.Price)
+        </dd>
+        <dt class="col-sm-2">
+            From:
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BeginDate)
+        </dd>
+        <dt class="col-sm-2">
+            To:
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EndDate)
+        </dd>
     </dl>
 </div>
-@{ if (@Model.BeginDate == "01.01.0001 0:00:00" || @Model.EndDate == "01.01.0001 0:00:00")
+@{ if (@Model.BeginDate == "" || @Model.EndDate == "" || @Model.BeginDate == null || @Model.EndDate == null)
     {
         <h4>To book a room, you need to go back to the main page and select a date!</h4>
         <p></p>
@@ -34,9 +47,9 @@
         <div>
             <form method="post" asp-action="Reserve" asp-controller="Booking">
                 <p>
-                    <input type="hidden" name="id" value="@Model.Room.Id" />
-                    <input type="hidden" name="bd" value="@Model.BeginDate" />
-                    <input type="hidden" name="ed" value="@Model.EndDate" />
+                    <input type="hidden" name="id" value="@Model.Room.Id">
+                    <input type="hidden" name="bd" value="@Model.BeginDate">
+                    <input type="hidden" name="ed" value="@Model.EndDate">
                     <input type="submit" class="btn btn-success animate__animated animate__pulse" value="Забронировать" />
                 </p>
             </form>
