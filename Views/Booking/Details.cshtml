@@ -26,17 +26,21 @@
     <br />
 </div>
 <div>
-    <a asp-action="RoomsStatus" asp-controller="Booking" asp-route-seats = "@Model.Seats" 
-                                                         asp-route-hotelId = "@Model.Hotel.Id">
+    <a asp-action="RoomsStatus" asp-controller="Booking" 
+                                asp-route-hotelId = "@Model.Hotel.Id"
+                                asp-route-bd = "@Model.BeginDate"
+                                asp-route-ed = "@Model.EndDate"
+                                asp-route-seats = "@Model.Seats">
         <button type="button" class="btn btn-warning animate__animated animate__pulse">
             View room status
         </button>
     </a>
     <p></p>
-    <a asp-action="Index" asp-controller="Booking"  asp-route-city = "@Model.Hotel.City"
-                                                    asp-route-beginDate = "@Model.BeginDate"
-                                                    asp-route-endDate = "@Model.EndDate"
-                                                    asp-route-seats = "@Model.Seats">
+    <a asp-action="Index"   asp-controller="Booking"  
+                            asp-route-city = "@Model.Hotel.City"
+                            asp-route-bd = "@Model.BeginDate"
+                            asp-route-ed = "@Model.EndDate"
+                            asp-route-seats = "@Model.Seats">
         <button type="button" class="btn btn-dark animate__animated animate__pulse">
             Back to list
         </button>

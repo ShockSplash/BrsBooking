@@ -37,9 +37,12 @@
                 @Html.DisplayFor(modelItem => item.BeginDate)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+            <td>
                 <a asp-action="Details" asp-route-id="@item.Hotel.Id" 
-                                        asp-route-bd = "@item.BeginDate.ToString()"
-                                        asp-route-ed = "@item.EndDate.Date"
+                                        asp-route-bd = "@item.BeginDate"
+                                        asp-route-ed = "@item.EndDate"
                                         asp-route-seats = "@item.Seats">
                     <button type="button" class="btn btn-success animate__animated animate__pulse">
                         Detalis

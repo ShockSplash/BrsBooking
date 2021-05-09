@@ -25,8 +25,14 @@ namespace Booking.Controllers.Booking
         }
         // 
         // GET: /Booking/
-        public IActionResult Index(string city, DateTime beginDate, DateTime endDate, int seats)
+        public IActionResult Index(string city, DateTime beginDate, DateTime endDate, 
+                                int seats, string bd = "", string ed="")
         {   
+            if(bd != "" && ed != "")
+            {
+               beginDate = Convert.ToDateTime(bd);
+               endDate = Convert.ToDateTime(ed);
+            }
             if(city == null)
                 return View("ErrorMessage", new Error("Please enter the city name"));
             if(_bookingContext.Rooms.AsEnumerable().Select(r => r.Seats).DefaultIfEmpty(0).Max() < seats)
@@ -46,20 +52,17 @@ namespace Booking.Controllers.Booking
             var result = new List<CompositeModel>();
             foreach(var item in hotels)
             {
-                result.Add(new CompositeModel(beginDate, endDate){
+                result.Add(new CompositeModel(beginDate.ToString(), endDate.ToString()){
                     Hotel = item,
                     Seats = seats
                     });
             }
-            //Console.WriteLine("{0} {1}", beginDate, endDate);
-            
             return View(result);
         }
        
         // GET: /Booking/Details
-        public async Task<IActionResult> Details(int? id, DateTime bd, DateTime ed, int seats)
+        public async Task<IActionResult> Details(int? id, string bd, string ed, int seats)
         {
-            Console.WriteLine("{0} {1} {2} {3}", id, bd, ed, seats);
             if(id == null)
                 return View("ErrorMessage", new Error("Id is null[System error]"));
 
@@ -73,8 +76,24 @@ namespace Booking.Controllers.Booking
                     Seats = seats
                 });
         }
+        public IActionResult RoomsStatus(int hotelId, string bd, string ed, int seats)
+        {    
+            
 
-        public async Task<IActionResult> DetailsOfRoom(int? id, DateTime beginDate, DateTime endDate)
+            var rooms = _bookingContext.Rooms.Where(r => r.Seats == seats && r.HId == hotelId).ToList();
+            var cmList = new List<CompositeModel>();
+            foreach(var item in rooms)
+            {
+
+                cmList.Add(new CompositeModel(bd, ed){
+                    Room = item,
+                    Seats = item.Seats
+                });
+            }
+            return View(cmList);
+        }
+
+        public async Task<IActionResult> DetailsOfRoom(int? id, string bd, string ed)
         {
             if (id == null)
                 return View("ErrorMessage", new Error("Id is null[System error]"));
@@ -83,14 +102,16 @@ namespace Booking.Controllers.Booking
             if (room == null)
                 return View("ErrorMessage", new Error("No such rooms"));
 
-            return View(new CompositeModel(beginDate, endDate){
+            return View(new CompositeModel(ed, ed){
                 Room = room
             });
         }
 
         [HttpPost]
-        public IActionResult Reserve(int? id, DateTime beginDate, DateTime endDate)
+        public IActionResult Reserve(int? id, string bd, string ed)
         {
+            var beginDate = Convert.ToDateTime(bd);
+            var endDate = Convert.ToDateTime(ed);
             if (User.Identity.Name != null)
             {
                 booking book = _reserve.Reserve(id, _bookingContext, User.Identity.Name, beginDate, endDate);
@@ -102,20 +123,6 @@ namespace Booking.Controllers.Booking
             {
                 return RedirectToRoute(new { controller = "UsersAuth", action = "SignInIndex" });
             }
-        }
-
-        public IActionResult RoomsStatus(int hotelId, DateTime beginDate, DateTime endDate, int seats)
-        {
-            var rooms = _bookingContext.Rooms.Where(r => r.Seats == seats && r.HId == hotelId).ToList();
-            var cmList = new List<CompositeModel>();
-            foreach(var item in rooms)
-            {
-                cmList.Add(new CompositeModel(beginDate, endDate){
-                    Room = item,
-                    Seats = item.Seats
-                });
-            }
-            return View(cmList);
         }
     }
 }
