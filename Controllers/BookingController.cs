@@ -23,8 +23,7 @@ namespace Booking.Controllers.Booking
             _reserve = reserve;
             _search = search;
         }
-        // 
-        // GET: /Booking/
+
         public IActionResult Index(string city, DateTime beginDate, DateTime endDate, 
                                 int seats, string bd = "", string ed="")
         {   
@@ -78,6 +77,7 @@ namespace Booking.Controllers.Booking
                     Seats = seats
                 });
         }
+
         public IActionResult RoomsStatus(int hotelId, string bd, string ed, int seats)
         {    
             var rooms = _bookingContext.Rooms.Where(r => r.Seats == seats && r.HId == hotelId).ToList();
@@ -106,6 +106,7 @@ namespace Booking.Controllers.Booking
                 Room = room
             });
         }
+
 
         [HttpPost]
         public IActionResult Reserve(int? id, string bd, string ed)
